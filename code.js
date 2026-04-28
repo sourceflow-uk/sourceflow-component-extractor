@@ -59,7 +59,7 @@ async function runPlugin() {
 
     // Build CSV rows
     for (const child of childFrames) {
-      const link = `https://www.figma.com/file/${fileKey}?node-id=${encodeURIComponent(parent.id)}`;
+      const link = `https://www.figma.com/file/${fileKey}?node-id=${encodeURIComponent(child.id)}`;
       allRows.push([
         child.name,
         link,
