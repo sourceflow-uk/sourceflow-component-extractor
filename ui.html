@@ -1,36 +1,100 @@
 <!DOCTYPE html>
 <html>
-  <body style="background-color: #211531;">
-    <div style="font-family: Inter, sans-serif; background-color: #211531; color: #fff;">
-      <h3>Enter your Figma File URL</h3>
-      <p style="font-size: 12px;">Right click the tab above > <strong>Copy Link</strong></p>
-      <input id="url" type="text" style="width: 100%; padding: 8px;" placeholder="https://www.figma.com/design/XXXX/Your-File-Name" />
-      <button id="submit" style="margin-top: 12px; border-radius: 100px; background-color:#98CE00; color: #211531; border: none; padding: 16px 23px 16px 23px; font-weight: bold;">Submit</button>
-    </div>
+<head>
+<meta charset="utf-8">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
 
-    <script>
-      document.getElementById("submit").onclick = () => {
-        const url = document.getElementById("url").value;
-        parent.postMessage({ pluginMessage: { type: "file-url", url } }, "*");
-      };
+  body {
+    font-family: Inter, -apple-system, sans-serif;
+    font-size: 13px;
+    color: #1F1F1F;
+    background: #fff;
+  }
 
-      // Receive CSV content from plugin code
-      window.onmessage = (event) => {
-        const msg = event.data.pluginMessage;
-        if (msg.type === "download-csv") {
-          const blob = new Blob([msg.data], { type: "text/csv;charset=utf-8;" });
-          const url = URL.createObjectURL(blob);
-          const link = document.createElement("a");
-          link.href = url;
-          link.download = msg.fileName;
-          document.body.appendChild(link);
-          link.click();
-          document.body.removeChild(link);
+  header {
+    background: #4542FF;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+  }
+  header span {
+    font-size: 13px;
+    font-weight: 700;
+    color: #fff;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+  }
 
-          // Optionally notify the plugin to close
-          parent.postMessage({ pluginMessage: { type: "close" } }, "*");
-        }
-      };
-    </script>
-  </body>
+  .body { padding: 20px 16px; }
+
+  .hint {
+    color: #666;
+    margin-bottom: 16px;
+    line-height: 1.5;
+  }
+
+  input[type="text"] {
+    width: 100%;
+    padding: 8px 10px;
+    font-size: 13px;
+    font-family: inherit;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    outline: none;
+    margin-bottom: 12px;
+    color: #1F1F1F;
+  }
+  input[type="text"]:focus { border-color: #4542FF; }
+
+  .btn-submit {
+    display: block;
+    width: 100%;
+    padding: 10px;
+    background: #4542FF;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 600;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+  }
+  .btn-submit:hover { background: #3330cc; }
+</style>
+</head>
+<body>
+
+<header>
+  <span>SourceFlow Component Extractor</span>
+</header>
+
+<div class="body">
+  <p class="hint">Right click the Figma tab above > <strong>Copy Link</strong>, then paste the URL below.</p>
+  <input id="url" type="text" placeholder="https://www.figma.com/design/XXXX/Your-File-Name" />
+  <button id="submit" class="btn-submit">Extract Components</button>
+</div>
+
+<script>
+  document.getElementById("submit").onclick = () => {
+    const url = document.getElementById("url").value;
+    parent.postMessage({ pluginMessage: { type: "file-url", url } }, "*");
+  };
+
+  window.onmessage = (event) => {
+    const msg = event.data.pluginMessage;
+    if (msg.type === "download-csv") {
+      const blob = new Blob([msg.data], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = msg.fileName;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+
+      parent.postMessage({ pluginMessage: { type: "close" } }, "*");
+    }
+  };
+</script>
+</body>
 </html>
