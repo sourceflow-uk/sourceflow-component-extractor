@@ -1,6 +1,6 @@
 let fileKey = null;
 
-figma.showUI(__html__, { width: 400, height: 200 });
+figma.showUI(__html__, { width: 400, height: 300 });
 
 // Handle messages from the UI
 figma.ui.onmessage = async (msg) => {

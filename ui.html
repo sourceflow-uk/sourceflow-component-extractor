@@ -1,77 +1,157 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
 <style>
-  * { box-sizing: border-box; margin: 0; padding: 0; }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  html { color-scheme: dark; }
+
+  :root {
+    --purple:       #4542FF;
+    --purple-light: #D2D1FF;
+    --purple-bg:    #13133A;
+    --dark:         #E8E8FF;
+    --muted:        #6464A0;
+    --bg:           #07071A;
+    --white:        #0E0E24;
+    --border:       #1C1C42;
+    --radius:       8px;
+    --shadow:       0 2px 8px rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.35);
+  }
 
   body {
-    font-family: Inter, -apple-system, sans-serif;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background-color: var(--bg);
+    background-image: radial-gradient(ellipse 600px 300px at 50% -60px, rgba(69,66,255,0.16) 0%, transparent 70%);
+    color: var(--dark);
+    min-height: 100vh;
+    padding: 24px 16px;
     font-size: 13px;
-    color: #1F1F1F;
-    background: #fff;
-  }
-
-  header {
-    background: #4542FF;
-    padding: 14px 16px;
-    display: flex;
-    align-items: center;
-  }
-  header span {
-    font-size: 13px;
-    font-weight: 700;
-    color: #fff;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-  }
-
-  .body { padding: 20px 16px; }
-
-  .hint {
-    color: #666;
-    margin-bottom: 16px;
     line-height: 1.5;
   }
 
-  input[type="text"] {
+  .app {
+    max-width: 380px;
+    margin: 0 auto;
+  }
+
+  /* ── Header ── */
+  .header {
+    margin-bottom: 24px;
+  }
+  .header__logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 4px;
+  }
+  .header__dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: var(--purple);
+    box-shadow: 0 0 10px rgba(69,66,255,0.7);
+    flex-shrink: 0;
+  }
+  .header__title {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--purple-light);
+    letter-spacing: -0.01em;
+  }
+  .header__sub {
+    font-size: 12px;
+    color: var(--muted);
+    padding-left: 20px;
+  }
+
+  /* ── Card ── */
+  .card {
+    background: var(--white);
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+    border: 1px solid var(--border);
+    padding: 24px;
+  }
+
+  /* ── Field ── */
+  .field { margin-bottom: 20px; }
+  .field:last-child { margin-bottom: 0; }
+  .field__label {
+    display: block;
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 6px;
+  }
+  .field__input {
     width: 100%;
-    padding: 8px 10px;
+    padding: 9px 12px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
     font-size: 13px;
     font-family: inherit;
-    border: 1px solid #e0e0e0;
-    border-radius: 6px;
+    color: var(--dark);
+    background: var(--bg);
     outline: none;
-    margin-bottom: 12px;
-    color: #1F1F1F;
+    transition: border-color .15s;
   }
-  input[type="text"]:focus { border-color: #4542FF; }
+  .field__input:focus { border-color: var(--purple); }
+  .field__input::placeholder { color: var(--muted); }
 
-  .btn-submit {
+  /* ── Hint ── */
+  .hint {
+    font-size: 12px;
+    color: var(--muted);
+    line-height: 1.6;
+    margin-bottom: 20px;
+  }
+  .hint strong { color: var(--dark); font-weight: 500; }
+
+  /* ── Button ── */
+  .btn {
     display: block;
     width: 100%;
     padding: 10px;
-    background: #4542FF;
+    background: var(--purple);
     color: #fff;
     font-size: 13px;
     font-weight: 600;
     border: none;
     border-radius: 6px;
     cursor: pointer;
+    transition: background .15s, transform .1s;
+    font-family: inherit;
   }
-  .btn-submit:hover { background: #3330cc; }
+  .btn:hover { background: #5552FF; }
+  .btn:active { transform: scale(.98); }
 </style>
 </head>
 <body>
 
-<header>
-  <span>SourceFlow Component Extractor</span>
-</header>
+<div class="app">
 
-<div class="body">
-  <p class="hint">Right click the Figma tab above > <strong>Copy Link</strong>, then paste the URL below.</p>
-  <input id="url" type="text" placeholder="https://www.figma.com/design/XXXX/Your-File-Name" />
-  <button id="submit" class="btn-submit">Extract Components</button>
+  <div class="header">
+    <div class="header__logo">
+      <div class="header__dot"></div>
+      <span class="header__title">SourceFlow Component Extractor</span>
+    </div>
+    <div class="header__sub">Extract components from a Figma file</div>
+  </div>
+
+  <div class="card">
+    <p class="hint">Right click the Figma tab above &gt; <strong>Copy Link</strong>, then paste the URL below.</p>
+    <div class="field">
+      <label class="field__label" for="url">Figma URL</label>
+      <input id="url" class="field__input" type="text" placeholder="https://www.figma.com/design/XXXX/Your-File-Name" autocomplete="off" />
+    </div>
+    <button id="submit" class="btn">Extract Components</button>
+  </div>
+
 </div>
 
 <script>
