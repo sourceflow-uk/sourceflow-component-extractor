@@ -9,16 +9,17 @@
   html { color-scheme: dark; }
 
   :root {
-    --purple:       #4542FF;
-    --purple-light: #D2D1FF;
-    --purple-bg:    #13133A;
-    --dark:         #E8E8FF;
-    --muted:        #8A8ABE;
-    --bg:           #07071A;
-    --white:        #111128;
-    --border:       #262668;
-    --radius:       8px;
-    --shadow:       0 2px 8px rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.35);
+    --purple:        #4542FF;
+    --purple-light:  #D2D1FF;
+    --dark:          #E8E8FF;
+    --muted:         #8A8ABE;
+    --bg:            #07071A;
+    --border:        #262668;
+    --warn:          #F59E0B;
+    --warn-bg:       rgba(245, 158, 11, 0.07);
+    --warn-border:   rgba(245, 158, 11, 0.22);
+    --radius:        8px;
+    --shadow:        0 2px 8px rgba(0,0,0,.6), 0 8px 24px rgba(0,0,0,.35);
   }
 
   body {
@@ -30,21 +31,15 @@
       radial-gradient(ellipse 160px 120px at 82%   28%,  rgba(240, 28, 209, 0.14) 0%, transparent 52%),
       radial-gradient(ellipse 200px 160px at 14%   22%,  rgba(69,  66, 255, 0.10) 0%, transparent 55%);
     color: var(--dark);
-    min-height: 100vh;
     padding: 24px 16px;
     font-size: 13px;
     line-height: 1.5;
   }
 
-  .app {
-    max-width: 380px;
-    margin: 0 auto;
-  }
+  .app { max-width: 380px; margin: 0 auto; }
 
-  /* ── Header ── */
-  .header {
-    margin-bottom: 24px;
-  }
+  /* Header */
+  .header { margin-bottom: 20px; }
   .header__logo {
     display: flex;
     align-items: center;
@@ -52,8 +47,7 @@
     margin-bottom: 4px;
   }
   .header__dot {
-    width: 10px;
-    height: 10px;
+    width: 10px; height: 10px;
     border-radius: 50%;
     background: var(--purple);
     box-shadow: 0 0 10px rgba(69,66,255,0.7);
@@ -65,24 +59,23 @@
     color: var(--purple-light);
     letter-spacing: -0.01em;
   }
-  .header__sub {
-    font-size: 12px;
-    color: var(--muted);
-    padding-left: 20px;
-  }
+  .header__sub { font-size: 12px; color: var(--muted); padding-left: 20px; }
 
-  /* ── Card ── */
+  /* Views */
+  .view { display: none; }
+  .view.active { display: block; }
+
+  /* Card */
   .card {
     background: rgba(17, 17, 40, 0.72);
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     border: 1px solid var(--border);
-    padding: 24px;
+    padding: 20px;
   }
 
-  /* ── Field ── */
-  .field { margin-bottom: 20px; }
-  .field:last-child { margin-bottom: 0; }
+  /* Field */
+  .field { margin-bottom: 16px; }
   .field__label {
     display: block;
     font-size: 11px;
@@ -105,18 +98,25 @@
     transition: border-color .15s;
   }
   .field__input:focus { border-color: var(--purple); }
+  .field__input.is-error { border-color: #ef4444; }
   .field__input::placeholder { color: var(--muted); }
+  .field__error {
+    font-size: 11px;
+    color: #f87171;
+    margin-top: 6px;
+    display: none;
+  }
 
-  /* ── Hint ── */
+  /* Hint */
   .hint {
     font-size: 12px;
     color: var(--muted);
     line-height: 1.6;
-    margin-bottom: 20px;
+    margin-bottom: 16px;
   }
   .hint strong { color: var(--dark); font-weight: 500; }
 
-  /* ── Button ── */
+  /* Button */
   .btn {
     display: block;
     width: 100%;
@@ -128,11 +128,140 @@
     border: none;
     border-radius: 6px;
     cursor: pointer;
-    transition: background .15s, transform .1s;
+    transition: background .15s, transform .1s, opacity .15s;
     font-family: inherit;
   }
-  .btn:hover { background: #5552FF; }
-  .btn:active { transform: scale(.98); }
+  .btn:hover:not(:disabled) { background: #5552FF; }
+  .btn:active:not(:disabled) { transform: scale(.98); }
+  .btn:disabled { opacity: 0.5; cursor: not-allowed; }
+
+  /* Stats */
+  .stats {
+    display: flex;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  .stat { flex: 1; text-align: center; }
+  .stat + .stat { border-left: 1px solid var(--border); }
+  .stat__number {
+    display: block;
+    font-size: 30px;
+    font-weight: 700;
+    color: var(--purple-light);
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .stat__label {
+    display: block;
+    font-size: 11px;
+    color: var(--muted);
+    margin-top: 3px;
+  }
+
+  /* Skip rules */
+  .skip-rules {
+    margin-top: 16px;
+    padding-top: 14px;
+    border-top: 1px solid var(--border);
+  }
+  .skip-rules__label {
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .skip-rules__list {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+  .skip-rules__item {
+    font-size: 11px;
+    color: var(--muted);
+    padding-left: 12px;
+    position: relative;
+  }
+  .skip-rules__item::before {
+    content: '–';
+    position: absolute;
+    left: 0;
+    color: var(--border);
+  }
+  .skip-rules__item code {
+    font-family: 'SF Mono', 'Menlo', monospace;
+    font-size: 10px;
+    color: var(--dark);
+    background: rgba(255,255,255,0.06);
+    padding: 1px 4px;
+    border-radius: 3px;
+  }
+
+  /* Warning */
+  .warning {
+    background: var(--warn-bg);
+    border: 1px solid var(--warn-border);
+    border-radius: 6px;
+    padding: 12px;
+    margin-bottom: 16px;
+    display: none;
+  }
+  .warning.is-visible { display: block; }
+  .warning__title {
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--warn);
+    margin-bottom: 3px;
+  }
+  .warning__sub {
+    font-size: 11px;
+    color: var(--muted);
+    margin-bottom: 8px;
+    line-height: 1.5;
+  }
+  .warning__list {
+    list-style: none;
+    max-height: 90px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .warning__list::-webkit-scrollbar { width: 4px; }
+  .warning__list::-webkit-scrollbar-track { background: transparent; }
+  .warning__list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
+  .warning__item {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: none;
+    border: none;
+    font-size: 11px;
+    font-family: 'SF Mono', 'Menlo', monospace;
+    color: var(--dark);
+    padding: 2px 0 2px 14px;
+    position: relative;
+    cursor: pointer;
+    border-radius: 3px;
+    transition: color .12s, background .12s;
+  }
+  .warning__item:hover {
+    color: var(--warn);
+    background: rgba(245, 158, 11, 0.08);
+  }
+  .warning__item::before {
+    content: '';
+    position: absolute;
+    left: 3px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 4px; height: 4px;
+    border-radius: 50%;
+    background: var(--warn);
+    opacity: 0.7;
+  }
 </style>
 </head>
 <body>
@@ -147,36 +276,140 @@
     <div class="header__sub">Extract components from a Figma file</div>
   </div>
 
-  <div class="card">
-    <p class="hint">Right click the Figma tab above &gt; <strong>Copy Link</strong>, then paste the URL below.</p>
-    <div class="field">
-      <label class="field__label" for="url">Figma URL</label>
-      <input id="url" class="field__input" type="text" placeholder="https://www.figma.com/design/XXXX/Your-File-Name" autocomplete="off" />
+  <!-- Screen 1: URL input -->
+  <div id="view-url" class="view active">
+    <div class="card">
+      <p class="hint">Right click the Figma tab above &gt; <strong>Copy Link</strong>, then paste the URL below.</p>
+      <div class="field">
+        <label class="field__label" for="url">Figma URL</label>
+        <input id="url" class="field__input" type="text"
+          placeholder="https://www.figma.com/design/XXXX/Your-File-Name"
+          autocomplete="off" />
+        <p id="url-error" class="field__error"></p>
+      </div>
+      <button id="btn-analyse" class="btn">Analyse</button>
+      <div class="skip-rules">
+        <p class="skip-rules__label">These frames are always skipped</p>
+        <ul class="skip-rules__list">
+          <li class="skip-rules__item">Named exactly <code>🖼️ Cover</code></li>
+          <li class="skip-rules__item">Name contains <code>mobile</code> or <code>cookies</code></li>
+          <li class="skip-rules__item">Name contains <code>skip component extract</code></li>
+        </ul>
+      </div>
     </div>
-    <button id="submit" class="btn">Extract Components</button>
+  </div>
+
+  <!-- Screen 2: Review -->
+  <div id="view-review" class="view">
+    <div class="card">
+      <div class="stats">
+        <div class="stat">
+          <span id="unique-count" class="stat__number">—</span>
+          <span class="stat__label">unique components</span>
+        </div>
+        <div class="stat">
+          <span id="frame-count" class="stat__number">—</span>
+          <span class="stat__label">frames scanned</span>
+        </div>
+      </div>
+
+      <div id="warning-section" class="warning">
+        <p class="warning__title">⚠ <span id="flagged-count"></span> components need renaming</p>
+        <p class="warning__sub">These names start with "Frame" — update them in Figma before downloading:</p>
+        <ul id="flagged-list" class="warning__list"></ul>
+      </div>
+
+      <button id="btn-download" class="btn">Download CSV</button>
+    </div>
   </div>
 
 </div>
 
 <script>
-  document.getElementById("submit").onclick = () => {
-    const url = document.getElementById("url").value;
-    parent.postMessage({ pluginMessage: { type: "file-url", url } }, "*");
+  const btnAnalyse     = document.getElementById('btn-analyse');
+  const btnDownload    = document.getElementById('btn-download');
+  const urlInput       = document.getElementById('url');
+  const urlError       = document.getElementById('url-error');
+  const viewUrl        = document.getElementById('view-url');
+  const viewReview     = document.getElementById('view-review');
+  const uniqueCountEl  = document.getElementById('unique-count');
+  const frameCountEl   = document.getElementById('frame-count');
+  const flaggedCountEl = document.getElementById('flagged-count');
+  const flaggedList    = document.getElementById('flagged-list');
+  const warningSection = document.getElementById('warning-section');
+
+  function showView(view) {
+    viewUrl.classList.remove('active');
+    viewReview.classList.remove('active');
+    view.classList.add('active');
+  }
+
+  function showError(msg) {
+    urlError.textContent = msg;
+    urlError.style.display = 'block';
+    urlInput.classList.add('is-error');
+    btnAnalyse.textContent = 'Analyse';
+    btnAnalyse.disabled = false;
+  }
+
+  btnAnalyse.onclick = () => {
+    const url = urlInput.value.trim();
+    if (!url) { showError('Please paste a Figma URL.'); return; }
+    urlError.style.display = 'none';
+    urlInput.classList.remove('is-error');
+    btnAnalyse.textContent = 'Scanning…';
+    btnAnalyse.disabled = true;
+    parent.postMessage({ pluginMessage: { type: 'file-url', url } }, '*');
+  };
+
+  urlInput.addEventListener('keydown', e => { if (e.key === 'Enter') btnAnalyse.click(); });
+
+  btnDownload.onclick = () => {
+    btnDownload.textContent = 'Downloading…';
+    btnDownload.disabled = true;
+    parent.postMessage({ pluginMessage: { type: 'confirm-download' } }, '*');
   };
 
   window.onmessage = (event) => {
     const msg = event.data.pluginMessage;
-    if (msg.type === "download-csv") {
-      const blob = new Blob([msg.data], { type: "text/csv;charset=utf-8;" });
-      const url = URL.createObjectURL(blob);
-      const link = document.createElement("a");
-      link.href = url;
-      link.download = msg.fileName;
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
+    if (!msg) return;
 
-      parent.postMessage({ pluginMessage: { type: "close" } }, "*");
+    if (msg.type === 'scan-result') {
+      uniqueCountEl.textContent = msg.uniqueCount;
+      frameCountEl.textContent = msg.frameCount;
+
+      if (msg.flaggedNames.length > 0) {
+        flaggedCountEl.textContent = msg.flaggedNames.length;
+        flaggedList.innerHTML = '';
+        msg.flaggedNames.forEach(({ name, link }) => {
+          const btn = document.createElement('button');
+          btn.className = 'warning__item';
+          btn.textContent = name;
+          btn.title = 'Open in Figma';
+          btn.onclick = () => parent.postMessage({ pluginMessage: { type: 'open-url', url: link } }, '*');
+          flaggedList.appendChild(btn);
+        });
+        warningSection.classList.add('is-visible');
+      }
+
+      showView(viewReview);
+    }
+
+    if (msg.type === 'error') {
+      showError(msg.message);
+    }
+
+    if (msg.type === 'download-csv') {
+      const blob = new Blob([msg.data], { type: 'text/csv;charset=utf-8;' });
+      const blobUrl = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = blobUrl;
+      a.download = msg.fileName;
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(blobUrl);
+      parent.postMessage({ pluginMessage: { type: 'close' } }, '*');
     }
   };
 </script>
