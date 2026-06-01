@@ -2,6 +2,13 @@
 
 All notable changes to SourceFlow Component Extractor will be documented here.
 
+## [1.0.1] - 2026-06-01
+
+### Fixed
+- Removed `version` field from `manifest.json` that was preventing the plugin from loading in Figma
+
+---
+
 ## [1.0.0] - 2026-06-01
 
 ### Added
